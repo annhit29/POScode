@@ -1,0 +1,8 @@
+# ce fichier ignore tous les fichiers de type .o, .h.gch, a.out, hello_world et sha
+
+*~
+*.o
+*.h.gch
+a.out
+/hello_world
+/sha
