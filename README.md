@@ -1,4 +1,4 @@
-# POS-code
+# POScode
 POS code de séries hebdomadaires
 
 
