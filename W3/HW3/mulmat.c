@@ -1,4 +1,4 @@
-//1h30min
+//2h03min
 //Le prgm mulmat calcule la multiplication de deux matrices.
 
 #include <stdio.h>
@@ -126,6 +126,6 @@ void affiche_matrice(const Matrice m){
         for (size_t j=0; j<m.m; ++j){
             printf("M[%zu][%zu] = %lf  ", i, j, m.tab[i][j]);
         }
-        putchar('\n');// putt he character `'\n'`: to go to another line when going from one row to the other row of the matrix
+        putchar('\n');// put the character `'\n'`: to go to another line when going from one row to the other row of the matrix
     }
 }
