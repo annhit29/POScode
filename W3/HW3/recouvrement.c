@@ -24,11 +24,12 @@ typedef struct{
 
 //le prototype de la fonction remplitGrille() :
 int remplitGrille(Grille grille, size_t ligne, size_t colonne, char direction, size_t longueur);
-
-
+void initializeGrid(Grille grille);
+void addElemOnGrid(Grille grille);
+void displayFinalGrid(Grille grille);
 
 int main(void){
-    char grille[DIM][DIM];
+    Grille grille;
     initializeGrid(grille);
     addElemOnGrid(grille);
     displayFinalGrid(grille);
@@ -49,7 +50,7 @@ void initializeGrid(Grille grille){
 void displayFinalGrid(Grille grille){
     for (size_t i=0; i<DIM; ++i){
         for (size_t j=0; j<DIM; ++j){
-            printf(grille.gr[i][j]);
+            printf("grille.gr[i][j]= %c", grille.gr[i][j]);
         }
         putchar('\n');// put the character `'\n'`: to go to another line when going from one row to the other row of the matrix
     }
@@ -59,8 +60,8 @@ void displayFinalGrid(Grille grille){
 void addElemOnGrid(Grille grille){
     //declaration & initialization(so set to the default value) variables we will need:
     int x=1, y=1; //the coord (x, y) set at (1, 1)
-    char direction = 'N';
-    size_t gridSize = 1;
+    char direction;
+    size_t fillRange = 1;
 
     
     do{
@@ -69,30 +70,35 @@ void addElemOnGrid(Grille grille){
     }while(x<0 || x> DIM);
 
     do{
-        printf("Entrez coord. y: %d", y);
+        printf("Entrez coord. y: ");
         scanf("%d", &y);
     }while(y<0 || y > DIM);
 
+    //FIXME: pk printf deux fois?
     do{
         printf("Entrez direction (N,S,E,O):");
         scanf("%c", &direction);
-        putchar('\n');// put the character `'\n'`: to go to another line when going from one row to the other row of the matrix
     }while(direction!= 'N' && direction!= 'S' && direction!= 'E' && direction!= 'O');
 
     do{
         printf("Entrez taille:");
-        scanf("%d", &gridSize);
-    }while(gridSize<0 || gridSize>DIM);
+        scanf("%zu", &fillRange);
+    }while(fillRange<0 || fillRange>DIM);
 
-    if (remplitGrille(grille, x, y, direction, gridSize) ==1){
-        printf("Placement en (%d,%d) direction %c longueur %zu -> succès",grille.ligne, grille.colonne, grille.direction, grille.longueur);
+    printf("Placement en (%d,%d) direction %c longueur %zu -> ",x, y, direction, fillRange); 
+    if (remplitGrille(grille, x, y, direction, fillRange)){
+        // ≡ if (remplitGrille(grille, x, y, direction, fillRange)){...}
+        printf("succès\n");
     }else{
-        printf("Placement en (%d,%d) direction %c longueur %zu -> ECHEC",grille.ligne, grille.colonne, grille.direction, grille.longueur);
+        printf("ECHEC\n");
     }
 }
 
 
 // vérifier si le placement dans une grille d'un objet de dimension longueur est possible, en partant de la coordonnée (ligne,colonne) et dans la direction définie par direction (Nord, Sud, Est ou Ouest).
+
+//Si le placement est possible, la fonction devra de plus effectuer ce placement (voir ci-dessous la description de la grille).
+//La fonction devra indiquer (par la valeur de retour) si le placement a pu être réalisé ou non: cette meth retourne donc en fait une valeur booleenne.
 int remplitGrille(Grille grille, size_t ligne, size_t colonne, char direction, size_t longueur){
     
     //declae et initialize (set the default value) of canBeFilled = FALSE:
@@ -115,7 +121,29 @@ int remplitGrille(Grille grille, size_t ligne, size_t colonne, char direction, s
             break;
         //default:;
     }
+
+    // indique si le placement a pu être réalisé ou non:
+    int isPossible = TRUE; //isPossible = "c'est possible de mettre tous les elems dans le nombre de cases que prendra l'objet dans la direction donnée (Nord, Sud, Est ou Ouest) à partir des coordonnées (ligne, colonne) spécifiées ?"
+    size_t l=0, i=0, j=0;
+    for (l=0, i=0, j = 0; isPossible && i<DIM && j<DIM; ++l, i+=dx, j+=dy){
+        if(grille.gr[i][j]==REMPLI){
+            isPossible=FALSE;
+        }//o/w isPossible = TRUE; and so just fill in the cases
+    }
     
+    /* Si l == longueur c'est que j'ai pu placer l'objet sur toute sa longueur.
+    * Il se pourrait en effet que je sois sorti de la boucle ci-dessus parce que
+    * i >= DIM ou j >= DIM... ...ce qui n'a pas modifié possible jusqu'ici
+    */
+    isPossible = isPossible && (l == longueur);
+
+    if(isPossible){ // si isPossible est TRUE
+        for(l=0, i=ligne,j=colonne; l<longueur; ++l, i+=dx, j+=dy){
+            grille.gr[i][j]=REMPLI;
+        }
+    }
+
+
     return canBeFilled;
 }
 

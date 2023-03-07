@@ -52,7 +52,7 @@ int main(void){
 
 // lit depuis le clavier les éléments d'une matrice (après avoir demandé ses tailles de lignes et colonnes et vérifié que celles-ci sont plus petites
 //que N) et retourne la matrice résultante.
-Matrice lire_matrice(void){
+Matrice lire_matrice(void){ // ≡ initialize_matrix 
 
     // initialisation de la matrice resultante.
     // Pour `n` et `m`: c'est pas on doit, mais il faut: car on utilise `struct`: les `n` et `m` sont definis dans le `struct` mais pas dans d'autres blocs:
