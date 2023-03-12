@@ -6,7 +6,14 @@
 int main(void){
     //nom du fichier à ouvrir (est "data.dat"):
     char const nom_fichier[] = "data.dat";
+
+    //initialisation:
     FILE* entree = NULL; // pointeur vers le fichier à ouvrir (NULL = pointeur nul)
+    int age_lu = 0; //age lu dans le fichier : c'est un compteur qui compte le nb de personnes lues so far
+    int age_somme = 0; //somme des ages des personnes lues dans le fichier
+    double age_moyen = 0.0; //age moyen des personnes lues dans le fichier
+    int age_max = -1; //just like in algo, put an impossible value which is not possible to be reached, such as -1 
+    int age_min = __INT_MAX__; //just like in algo, put an impossible value which is initially to be reached, such as ∞
 
     //𝐨𝐮𝐯𝐞𝐫𝐭𝐮𝐫𝐞 du fichier en mode lecture seule (r = read):
     entree = fopen(nom_fichier, "r");
@@ -17,12 +24,34 @@ int main(void){
     }else{
         // "" car on va lire le fichier commencant par le premier caractère, et ""=empty string
         char prenom[TAILLE_NOM+1]="";
-        while(fscanf(entree, "%10s", prenom) == 1){ //tant qu'on peut lire un nom de 10 caractères maximum
-            printf("%s", prenom);
+        int age = 0; //age de chaque personne qu'on va lire dans le fichier
+
+
+        //tant qu'on peut lire un nom de 10 caractères maximum et un age:
+        while(fscanf(entree, "%10s", prenom) == 1 && fscanf(entree, "%d", &age)){ //todo:Idk if it's correct to write 2 fscanf() in the same while() condition
+            
+            printf("%s\n", prenom);
+            age_lu+=1;
+            age_somme+=age;
+
+            if (age>age_max){
+                
+                age_max=age;
+                
+            }else if(age<age_min){
+                
+                age_min=age;
+
+            }
         }
+
+        age_moyen = (double)age_somme/age_lu;
 
         //𝐟𝐞𝐫𝐦𝐞𝐭𝐮𝐫𝐞 du fichier:
         fclose(entree);
+        printf("âge minimum : %d\n", age_min);
+        printf("âge maximum : %d\n", age_max);
+        printf("%d personnes, age moyen: %.1lf ans", age_lu, age_moyen);
     }
     return 0;
 }
