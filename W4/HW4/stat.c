@@ -4,6 +4,7 @@ Ce prgm calcule les statistiques sur les lettres contenues dans un fichier.
 
 
 #include <stdio.h> //for printf()
+//#include <stdbool.h> //for bool values
 
 #define TAILLE_MAX 1024 //cf ecriture.c for the definition of TAILLE_NOM
 #define NB_DEMANDS 3 //nb maximum de demandes en cas d'erreur
@@ -28,7 +29,7 @@ FILE* demander_fichier(){
     // ⚠ `FILE*` ≠ `%s`. These two types are different!
     // si on ecrit `char filename[__INT_MAX__]="";`, on aura l'erreur https://stackoverflow.com/questions/7902228/segmentation-fault-large-arrays
 
-    
+    int is_abondonned= 0; //flemme d'import stdbool.h . Cette variable sert à savoir qd je sors de la boucle while sans avoir besoin d'utiliser un `break;` dans la case2 
     do{
         printf("Nom du fichier à lire : ");
         scanf("%s", filename);
@@ -40,16 +41,17 @@ FILE* demander_fichier(){
             ++count_demand;
             fprintf(stderr, "-> ERREUR, je ne peux pas lire le fichier %s\n", filename); //It is good practice to redirect all error messages to stderr, while directing regular output to stdout. It is beneficial to do this because anything written to stderr is not buffered, i.e., it is immediately written to the screen so that the user can be warned immediately.
         }//case2
-        else if (entree==NULL && count_demand>=NB_DEMANDS){
-            fprintf(stderr, "=> j'abandonne !");
-            break;//todo: modifier la condition de while pour avoid l'utilisation de break
+        else if (entree==NULL && count_demand>=NB_DEMANDS){ //the condition between count_demand & ND_DEMANDS is to control the 𝐞𝐫𝐫𝐨𝐫 msg printed out
+            is_abondonned=1;
+            fprintf(stderr, "=> j'abandonne !\n");
+            //break;
         }//case3
         else{
             printf("-> OK, fichier %s ouvert pour lecture.\n", filename);
             return entree;//ok, coz entree is of type FILE*
         }
 
-    }while(count_demand<=NB_DEMANDS);
+    }while(is_abondonned==0); //Nein `count_demand<=NB_DEMANDS ||`
 
     return NULL;//if not in case3, then we must return sth of type FILE*, so pointeur NULL ∈ FILE*
 }
