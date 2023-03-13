@@ -27,7 +27,7 @@ FILE* demander_fichier(FILE* file_name, char mot[]){ //todo: mais du coup pas be
         printf("Nom du fichier à lire : ");
         scanf("%s\n", file_name);
         
-        FILE* entree = fopen(file_name, "r");
+        FILE* entree = fopen(file_name, "r"); //https://stackoverflow.com/questions/5517490/file-not-found-exception-in-c-sharp-and-c
         if(entree==NULL && count_demand<3){ // si le fichier n'existe pas, fopen() retourne NULL car pointe vers NULL
             ++count_demand;
             fprintf(stderr, "-> ERREUR, je ne peux pas lire le fichier %s\n", file_name); //It is good practice to redirect all error messages to stderr, while directing regular output to stdout. It is beneficial to do this because anything written to stderr is not buffered, i.e., it is immediately written to the screen so that the user can be warned immediately.
