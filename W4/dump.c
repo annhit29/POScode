@@ -39,7 +39,7 @@ int dump(const char* filename) //const car on veut garantir de ne pas modifier l
   }
 
   //verifie si le prgm n'a pas encore termine et si le fichier n'a pas d'erreur:
-  while() //TODO: complete the code
+  //while() //TODO: complete the code
 
   return err; //si tout s'est bien passé.
 }
