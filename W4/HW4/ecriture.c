@@ -23,7 +23,7 @@ int main(void){
     // OldBob  103   
 
     //ecriture dans le fichier avec iteration while (preferable):
-    //for(int i = 0; i<6; ++i){
+
         do{
             printf("Entrez un nom (CTRL+D pour terminer) :");
             //scanf("%s", prenom); // lecture du nom entré par l'utilisateur
@@ -37,11 +37,9 @@ int main(void){
                     fprintf(output_bytes,"%s %d\n",prenom, age);
                 }
             }
-
-            
         }while(!feof(stdin) && !ferror(stdin));// boucle jusqu'à ce que l'utilisateur tape CTRL+D (fin de fichier) pour terminer l'entrée des noms (CTRL+D est équivalent à EOF = End Of File)
 
-    //}
+
 
 
     //fwrite(prenom, sizeof(char), TAILLE_NOM, fichier); this line is useless coz we already wrote it (by scanf) the prenom and the age.
